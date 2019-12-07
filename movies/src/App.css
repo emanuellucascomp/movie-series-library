@@ -1,11 +1,31 @@
+.titleBar {
+  background-color: #000;
+  display: block;
+  color: #fff;
+  padding-left: 15px;
+}
+
+.searchInput {
+  font-size: 30;
+  display: block;
+  width: 100%;
+  padding-top: 10px;
+  padding-bottom: 10px;
+}
+
 .App {
   text-align: center;
 }
 
 .App-logo {
-  animation: App-logo-spin infinite 20s linear;
   height: 40vmin;
   pointer-events: none;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .App-logo {
+    animation: App-logo-spin infinite 20s linear;
+  }
 }
 
 .App-header {
