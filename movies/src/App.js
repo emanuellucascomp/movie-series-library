@@ -1,50 +1,40 @@
 import React, { Component } from "react";
+import MovieRow from "./MovieRow";
+import $ from "jquery";
 import "./App.css";
 
 class App extends Component {
   constructor(props) {
     super(props);
+    this.state = {};
+    this.search();
+  }
 
-    const movies = [
-      {
-        id: 0,
-        title: "Avengers: Infinity War",
-        overview: "Another hero movie :/"
+  search() {
+    var movieRows = [];
+    const url =
+      "https://api.themoviedb.org/3/movie/popular?api_key=f3eb96df0360fa103a28f8d0f1518224&language=en-US&page=1";
+    $.ajax({
+      url: url,
+      success: searchResults => {
+        const results = searchResults.results;
+        results.forEach(movie => {
+          movie.poster_src =
+            "http://image.tmdb.org/t/p/w185" + movie.poster_path;
+          const movieRow = <MovieRow key={movie.id} movie={movie} />;
+          movieRows.push(movieRow);
+        });
+        this.setState({ rows: movieRows });
       },
-      {
-        id: 1,
-        title: "Avengers: End Game",
-        overview: "Thanos dies"
-      },
-      {
-        id: 2,
-        title: "Spider Man",
-        overview: "Uncle May <3"
+      error: (xhr, status, err) => {
+        console.log(err);
       }
-    ];
-
-    var moviesRows = [];
-
-    movies.forEach(movie => {
-      const movieRow = (
-        <table key={movie.id}>
-          <tr>
-            <td>{movie.title}</td>
-            <td>{movie.overview}</td>
-          </tr>
-        </table>
-      );
-      moviesRows.push(movieRow);
     });
-
-    this.state = {
-      rows: moviesRows
-    };
   }
 
   render() {
     return (
-      <div className="App">
+      <div>
         <table className="titleBar">
           <tbody>
             <tr>
@@ -61,10 +51,6 @@ class App extends Component {
             </tr>
           </tbody>
         </table>
-        <input
-          className="searchInput"
-          placeholder="Insira um título aqui"
-        ></input>
         {this.state.rows}
       </div>
     );
